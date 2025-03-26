@@ -97,8 +97,6 @@
   <link href="slides_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="slides_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="slides_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="slides_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-  <link href="slides_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
   <link href="slides_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
@@ -224,9 +222,9 @@ Dianne Cook <br> Econometrics and Business Statistics <br> Monash University <br
 <li>Why use a tour</li>
 <li>Algorithms in the <a href="http://ggobi.github.io/tourr/">tourr</a> package</li>
 <li>New developments in recent years</li>
-<li>Using tours to understand dimension reduction and clustering</li>
-<li>Applying to market segmentation</li>
-<li>Future research directions</li>
+<li>Model in the data space philosophy</li>
+<li>Using tours for clustering</li>
+<li>Application in market segmentation</li>
 </ul>
 </section>
 <section id="high-dimensional-visualisation" class="slide level2">
@@ -345,7 +343,7 @@ A = \left[ \begin{array}{c}
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="slides_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%" alt="Scatterplot showing the 2D data having two clusters."></p>
+<p><img data-src="slides_files/figure-revealjs/unnamed-chunk-2-1.png" class="quarto-figure quarto-figure-center" style="width:80.0%" alt="Scatterplot showing the 2D data having two clusters."></p>
 </figure>
 </div>
 </div>
@@ -461,7 +459,15 @@ a_{~41} &amp; a_{~42}\\
 <div class="columns">
 <div class="column f60" style="width:50%;">
 <p>Principal component analysis</p>
+<div class="f50">
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a>p_pca <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(penguins_sub[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>])</span>
+<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(p_pca, <span class="at">loadings =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="at">loadings.label =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -470,14 +476,26 @@ a_{~41} &amp; a_{~42}\\
 </div>
 </div>
 </div>
+</div>
 </div><div class="column f60" style="width:50%;">
 <p>NLDR: t-Stochastic neighbourhood embedding</p>
+<div class="f50">
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2022</span>)</span>
+<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a>p_tsne <span class="ot">&lt;-</span> Rtsne<span class="sc">::</span><span class="fu">Rtsne</span>(penguins_sub[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>])</span>
+<span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a>p_tsne_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">tsneX =</span> p_tsne<span class="sc">$</span>Y[, <span class="dv">1</span>], <span class="at">tsneY =</span> p_tsne<span class="sc">$</span>Y[, <span class="dv">2</span>])</span>
+<span id="cb2-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(p_tsne_df, <span class="fu">aes</span>(<span class="at">x=</span>tsneX, <span class="at">y=</span>tsneY)) <span class="sc">+</span> </span>
+<span id="cb2-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb2-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="slides_files/figure-revealjs/unnamed-chunk-7-1.png" class="quarto-figure quarto-figure-center" style="width:80.0%" alt="Dimension reduction with t-SNE on the penguins data shown as a scatterplot."></p>
 </figure>
+</div>
 </div>
 </div>
 </div>
@@ -488,7 +506,15 @@ a_{~41} &amp; a_{~42}\\
 <div class="columns">
 <div class="column f60" style="width:50%;">
 <p>Data in the model space <sup>1</sup></p>
+<div class="f50">
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a>p_pca <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(penguins_sub[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>])</span>
+<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(p_pca, <span class="at">loadings =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="at">loadings.label =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb3-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -497,31 +523,34 @@ a_{~41} &amp; a_{~42}\\
 </div>
 </div>
 </div>
+</div>
 </div><div class="column f60" style="width:50%;">
 <p>Model in the data space</p>
+<div class="f50">
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mulgar)</span>
-<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a>p_pca_m <span class="ot">&lt;-</span> <span class="fu">pca_model</span>(p_pca, <span class="at">s=</span><span class="fl">2.2</span>)</span>
-<span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a>p_pca_m_d <span class="ot">&lt;-</span> <span class="fu">rbind</span>(p_pca_m<span class="sc">$</span>points, penguins_sub[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>])</span>
-<span id="cb1-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">animate_xy</span>(p_pca_m_d, <span class="at">edges=</span>p_pca_m<span class="sc">$</span>edges,</span>
-<span id="cb1-6"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">axes=</span><span class="st">"bottomleft"</span>,</span>
-<span id="cb1-7"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">edges.col=</span><span class="st">"#E7950F"</span>,</span>
-<span id="cb1-8"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">edges.width=</span><span class="dv">3</span>)</span>
-<span id="cb1-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">render_gif</span>(p_pca_m_d, </span>
-<span id="cb1-10"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="fu">grand_tour</span>(), </span>
-<span id="cb1-11"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="fu">display_xy</span>(<span class="at">half_range=</span><span class="fl">4.2</span>,</span>
-<span id="cb1-12"><a href="" aria-hidden="true" tabindex="-1"></a>                      <span class="at">edges=</span>p_pca_m<span class="sc">$</span>edges, </span>
-<span id="cb1-13"><a href="" aria-hidden="true" tabindex="-1"></a>                      <span class="at">edges.col=</span><span class="st">"#E7950F"</span>,</span>
-<span id="cb1-14"><a href="" aria-hidden="true" tabindex="-1"></a>                      <span class="at">edges.width=</span><span class="dv">3</span>),</span>
-<span id="cb1-15"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">gif_file=</span><span class="st">"gifs/p_pca_model.gif"</span>,</span>
-<span id="cb1-16"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">frames=</span><span class="dv">500</span>,</span>
-<span id="cb1-17"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">width=</span><span class="dv">400</span>,</span>
-<span id="cb1-18"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">height=</span><span class="dv">400</span>,</span>
-<span id="cb1-19"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">loop=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mulgar)</span>
+<span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="" aria-hidden="true" tabindex="-1"></a>p_pca_m <span class="ot">&lt;-</span> <span class="fu">pca_model</span>(p_pca, <span class="at">s=</span><span class="fl">2.2</span>)</span>
+<span id="cb4-4"><a href="" aria-hidden="true" tabindex="-1"></a>p_pca_m_d <span class="ot">&lt;-</span> <span class="fu">rbind</span>(p_pca_m<span class="sc">$</span>points, penguins_sub[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>])</span>
+<span id="cb4-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">animate_xy</span>(p_pca_m_d, <span class="at">edges=</span>p_pca_m<span class="sc">$</span>edges,</span>
+<span id="cb4-6"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">axes=</span><span class="st">"bottomleft"</span>,</span>
+<span id="cb4-7"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">edges.col=</span><span class="st">"#E7950F"</span>,</span>
+<span id="cb4-8"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">edges.width=</span><span class="dv">3</span>)</span>
+<span id="cb4-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">render_gif</span>(p_pca_m_d, </span>
+<span id="cb4-10"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="fu">grand_tour</span>(), </span>
+<span id="cb4-11"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="fu">display_xy</span>(<span class="at">half_range=</span><span class="fl">4.2</span>,</span>
+<span id="cb4-12"><a href="" aria-hidden="true" tabindex="-1"></a>                      <span class="at">edges=</span>p_pca_m<span class="sc">$</span>edges, </span>
+<span id="cb4-13"><a href="" aria-hidden="true" tabindex="-1"></a>                      <span class="at">edges.col=</span><span class="st">"#E7950F"</span>,</span>
+<span id="cb4-14"><a href="" aria-hidden="true" tabindex="-1"></a>                      <span class="at">edges.width=</span><span class="dv">3</span>),</span>
+<span id="cb4-15"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">gif_file=</span><span class="st">"gifs/p_pca_model.gif"</span>,</span>
+<span id="cb4-16"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">frames=</span><span class="dv">500</span>,</span>
+<span id="cb4-17"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">width=</span><span class="dv">400</span>,</span>
+<span id="cb4-18"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">height=</span><span class="dv">400</span>,</span>
+<span id="cb4-19"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">loop=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+</div>
 </div>
 <p><img data-src="gifs/p_pca_model.gif" width="400"></p>
 </div></div>
@@ -531,12 +560,23 @@ a_{~41} &amp; a_{~42}\\
 <div class="columns">
 <div class="column f70" style="width:50%;">
 <p>Data in the model space</p>
+<div class="f50">
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2022</span>)</span>
+<span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a>p_tsne <span class="ot">&lt;-</span> Rtsne<span class="sc">::</span><span class="fu">Rtsne</span>(penguins_sub[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>])</span>
+<span id="cb5-3"><a href="" aria-hidden="true" tabindex="-1"></a>p_tsne_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">tsneX =</span> p_tsne<span class="sc">$</span>Y[, <span class="dv">1</span>], <span class="at">tsneY =</span> p_tsne<span class="sc">$</span>Y[, <span class="dv">2</span>])</span>
+<span id="cb5-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(p_tsne_df, <span class="fu">aes</span>(<span class="at">x=</span>tsneX, <span class="at">y=</span>tsneY)) <span class="sc">+</span> </span>
+<span id="cb5-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb5-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="slides_files/figure-revealjs/unnamed-chunk-10-1.png" class="quarto-figure quarto-figure-center" style="width:80.0%" alt="Dimension reduction with t-SNE on the penguins data shown as a scatterplot."></p>
 </figure>
+</div>
 </div>
 </div>
 </div>
@@ -552,26 +592,26 @@ a_{~41} &amp; a_{~42}\\
 </section>
 <section id="hiding-in-high-d-12" class="slide level2">
 <h2>Hiding in high-d <span class="f50">(1/2)</span></h2>
-<div class="f70">
+<div class="f50">
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tourr)</span>
-<span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
-<span id="cb2-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">946</span>)</span>
-<span id="cb2-5"><a href="" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x1=</span><span class="fu">runif</span>(<span class="dv">200</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), </span>
-<span id="cb2-6"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">x2=</span><span class="fu">runif</span>(<span class="dv">200</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), </span>
-<span id="cb2-7"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">x3=</span><span class="fu">runif</span>(<span class="dv">200</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>))</span>
-<span id="cb2-8"><a href="" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span></span>
-<span id="cb2-9"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">x4 =</span> x3 <span class="sc">+</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="sc">-</span><span class="fl">0.1</span>, <span class="fl">0.1</span>))</span>
-<span id="cb2-10"><a href="" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(d, <span class="fu">c</span>(<span class="at">x1=</span><span class="dv">0</span>, <span class="at">x2=</span><span class="dv">0</span>, <span class="at">x3=</span><span class="sc">-</span><span class="fl">0.5</span>, <span class="at">x4=</span><span class="fl">0.5</span>))</span>
-<span id="cb2-11"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-12"><a href="" aria-hidden="true" tabindex="-1"></a>d_r <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span></span>
-<span id="cb2-13"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">x1 =</span> <span class="fu">cos</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x1 <span class="sc">+</span> <span class="fu">sin</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x3,</span>
-<span id="cb2-14"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="at">x3 =</span> <span class="sc">-</span><span class="fu">sin</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x1 <span class="sc">+</span> <span class="fu">cos</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x3,</span>
-<span id="cb2-15"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="at">x2 =</span> <span class="fu">cos</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x2 <span class="sc">+</span> <span class="fu">sin</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x4,</span>
-<span id="cb2-16"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="at">x4 =</span> <span class="sc">-</span><span class="fu">sin</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x2 <span class="sc">+</span> <span class="fu">cos</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb6-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tourr)</span>
+<span id="cb6-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb6-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">946</span>)</span>
+<span id="cb6-5"><a href="" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x1=</span><span class="fu">runif</span>(<span class="dv">200</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), </span>
+<span id="cb6-6"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">x2=</span><span class="fu">runif</span>(<span class="dv">200</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), </span>
+<span id="cb6-7"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">x3=</span><span class="fu">runif</span>(<span class="dv">200</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb6-8"><a href="" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span></span>
+<span id="cb6-9"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">x4 =</span> x3 <span class="sc">+</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="sc">-</span><span class="fl">0.1</span>, <span class="fl">0.1</span>))</span>
+<span id="cb6-10"><a href="" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(d, <span class="fu">c</span>(<span class="at">x1=</span><span class="dv">0</span>, <span class="at">x2=</span><span class="dv">0</span>, <span class="at">x3=</span><span class="sc">-</span><span class="fl">0.5</span>, <span class="at">x4=</span><span class="fl">0.5</span>))</span>
+<span id="cb6-11"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="" aria-hidden="true" tabindex="-1"></a>d_r <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span></span>
+<span id="cb6-13"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">x1 =</span> <span class="fu">cos</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x1 <span class="sc">+</span> <span class="fu">sin</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x3,</span>
+<span id="cb6-14"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="at">x3 =</span> <span class="sc">-</span><span class="fu">sin</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x1 <span class="sc">+</span> <span class="fu">cos</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x3,</span>
+<span id="cb6-15"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="at">x2 =</span> <span class="fu">cos</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x2 <span class="sc">+</span> <span class="fu">sin</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x4,</span>
+<span id="cb6-16"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="at">x4 =</span> <span class="sc">-</span><span class="fu">sin</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x2 <span class="sc">+</span> <span class="fu">cos</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </div>
@@ -584,26 +624,26 @@ a_{~41} &amp; a_{~42}\\
 </section>
 <section id="hiding-in-high-d-22" class="slide level2">
 <h2>Hiding in high-d <span class="f50">(2/2)</span></h2>
-<div class="f70">
+<div class="f50">
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tourr)</span>
-<span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
-<span id="cb3-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">946</span>)</span>
-<span id="cb3-5"><a href="" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x1=</span><span class="fu">runif</span>(<span class="dv">200</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), </span>
-<span id="cb3-6"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">x2=</span><span class="fu">runif</span>(<span class="dv">200</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), </span>
-<span id="cb3-7"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">x3=</span><span class="fu">runif</span>(<span class="dv">200</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>))</span>
-<span id="cb3-8"><a href="" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span></span>
-<span id="cb3-9"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">x4 =</span> x3 <span class="sc">+</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="sc">-</span><span class="fl">0.1</span>, <span class="fl">0.1</span>))</span>
-<span id="cb3-10"><a href="" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(d, <span class="fu">c</span>(<span class="at">x1=</span><span class="dv">0</span>, <span class="at">x2=</span><span class="dv">0</span>, <span class="at">x3=</span><span class="sc">-</span><span class="fl">0.5</span>, <span class="at">x4=</span><span class="fl">0.5</span>))</span>
-<span id="cb3-11"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="" aria-hidden="true" tabindex="-1"></a>d_r <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span></span>
-<span id="cb3-13"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">x1 =</span> <span class="fu">cos</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x1 <span class="sc">+</span> <span class="fu">sin</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x3,</span>
-<span id="cb3-14"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="at">x3 =</span> <span class="sc">-</span><span class="fu">sin</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x1 <span class="sc">+</span> <span class="fu">cos</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x3,</span>
-<span id="cb3-15"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="at">x2 =</span> <span class="fu">cos</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x2 <span class="sc">+</span> <span class="fu">sin</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x4,</span>
-<span id="cb3-16"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="at">x4 =</span> <span class="sc">-</span><span class="fu">sin</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x2 <span class="sc">+</span> <span class="fu">cos</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb7-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tourr)</span>
+<span id="cb7-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb7-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">946</span>)</span>
+<span id="cb7-5"><a href="" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x1=</span><span class="fu">runif</span>(<span class="dv">200</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), </span>
+<span id="cb7-6"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">x2=</span><span class="fu">runif</span>(<span class="dv">200</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), </span>
+<span id="cb7-7"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="at">x3=</span><span class="fu">runif</span>(<span class="dv">200</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb7-8"><a href="" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span></span>
+<span id="cb7-9"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">x4 =</span> x3 <span class="sc">+</span> <span class="fu">runif</span>(<span class="dv">200</span>, <span class="sc">-</span><span class="fl">0.1</span>, <span class="fl">0.1</span>))</span>
+<span id="cb7-10"><a href="" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(d, <span class="fu">c</span>(<span class="at">x1=</span><span class="dv">0</span>, <span class="at">x2=</span><span class="dv">0</span>, <span class="at">x3=</span><span class="sc">-</span><span class="fl">0.5</span>, <span class="at">x4=</span><span class="fl">0.5</span>))</span>
+<span id="cb7-11"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="" aria-hidden="true" tabindex="-1"></a>d_r <span class="ot">&lt;-</span> d <span class="sc">%&gt;%</span></span>
+<span id="cb7-13"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">x1 =</span> <span class="fu">cos</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x1 <span class="sc">+</span> <span class="fu">sin</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x3,</span>
+<span id="cb7-14"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="at">x3 =</span> <span class="sc">-</span><span class="fu">sin</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x1 <span class="sc">+</span> <span class="fu">cos</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x3,</span>
+<span id="cb7-15"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="at">x2 =</span> <span class="fu">cos</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x2 <span class="sc">+</span> <span class="fu">sin</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x4,</span>
+<span id="cb7-16"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="at">x4 =</span> <span class="sc">-</span><span class="fu">sin</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x2 <span class="sc">+</span> <span class="fu">cos</span>(pi<span class="sc">/</span><span class="dv">6</span>)<span class="sc">*</span>x4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </div>
@@ -706,15 +746,72 @@ a_{~41} &amp; a_{~42}\\
 </section>
 <section id="model-based---2d-13" class="slide level2">
 <h2>Model-based - 2D <span class="f50">(1/3)</span></h2>
-
-<img data-src="slides_files/figure-revealjs/unnamed-chunk-15-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%" alt="BIC values for a range of models and number of clusters for 2D data, alongside a plot of the data with the ellipses corresponding to the best model overlaid."><center>
+<div class="f50">
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a>penguins_BIC <span class="ot">&lt;-</span> <span class="fu">mclustBIC</span>(penguins_sub[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)])</span>
+<span id="cb8-2"><a href="" aria-hidden="true" tabindex="-1"></a>ggmc <span class="ot">&lt;-</span> <span class="fu">ggmcbic</span>(penguins_BIC, <span class="at">cl=</span><span class="dv">2</span><span class="sc">:</span><span class="dv">9</span>, <span class="at">top=</span><span class="dv">4</span>) <span class="sc">+</span> </span>
+<span id="cb8-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_discrete_divergingx</span>(<span class="at">palette =</span> <span class="st">"Roma"</span>) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Choose model"</span>) <span class="sc">+</span></span>
+<span id="cb8-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() </span>
+<span id="cb8-6"><a href="" aria-hidden="true" tabindex="-1"></a>penguins_mc <span class="ot">&lt;-</span> <span class="fu">Mclust</span>(penguins_sub[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)], </span>
+<span id="cb8-7"><a href="" aria-hidden="true" tabindex="-1"></a>                      <span class="at">G=</span><span class="dv">3</span>, </span>
+<span id="cb8-8"><a href="" aria-hidden="true" tabindex="-1"></a>                      <span class="at">modelNames =</span> <span class="st">"EVE"</span>)</span>
+<span id="cb8-9"><a href="" aria-hidden="true" tabindex="-1"></a>penguins_mce <span class="ot">&lt;-</span> <span class="fu">mc_ellipse</span>(penguins_mc)</span>
+<span id="cb8-10"><a href="" aria-hidden="true" tabindex="-1"></a>penguins_cl <span class="ot">&lt;-</span> penguins_sub[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)]</span>
+<span id="cb8-11"><a href="" aria-hidden="true" tabindex="-1"></a>penguins_cl<span class="sc">$</span>cl <span class="ot">&lt;-</span> <span class="fu">factor</span>(penguins_mc<span class="sc">$</span>classification)</span>
+<span id="cb8-12"><a href="" aria-hidden="true" tabindex="-1"></a>ggell <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb8-13"><a href="" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_point</span>(<span class="at">data=</span>penguins_cl, <span class="fu">aes</span>(<span class="at">x=</span>bl, <span class="at">y=</span>fl,</span>
+<span id="cb8-14"><a href="" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">colour=</span>cl),</span>
+<span id="cb8-15"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">alpha=</span><span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb8-16"><a href="" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_point</span>(<span class="at">data=</span>penguins_mce<span class="sc">$</span>ell, <span class="fu">aes</span>(<span class="at">x=</span>bl, <span class="at">y=</span>fl,</span>
+<span id="cb8-17"><a href="" aria-hidden="true" tabindex="-1"></a>                                         <span class="at">colour=</span>cl),</span>
+<span id="cb8-18"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">shape=</span><span class="dv">16</span>) <span class="sc">+</span></span>
+<span id="cb8-19"><a href="" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_point</span>(<span class="at">data=</span>penguins_mce<span class="sc">$</span>mn, <span class="fu">aes</span>(<span class="at">x=</span>bl, <span class="at">y=</span>fl,</span>
+<span id="cb8-20"><a href="" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">colour=</span>cl),</span>
+<span id="cb8-21"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">shape=</span><span class="dv">3</span>, <span class="at">size=</span><span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb8-22"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_discrete_divergingx</span>(<span class="at">palette =</span> <span class="st">"Zissou 1"</span>)  <span class="sc">+</span></span>
+<span id="cb8-23"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb8-24"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio=</span><span class="dv">1</span>, <span class="at">legend.position=</span><span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb8-25"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Best model: EVE"</span>)</span>
+<span id="cb8-26"><a href="" aria-hidden="true" tabindex="-1"></a>ggmc <span class="sc">+</span> ggell <span class="sc">+</span> <span class="fu">plot_layout</span>(<span class="at">ncol=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="slides_files/figure-revealjs/unnamed-chunk-15-1.png" class="quarto-figure quarto-figure-center" style="width:80.0%" alt="BIC values for a range of models and number of clusters for 2D data, alongside a plot of the data with the ellipses corresponding to the best model overlaid."></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<center>
 <span style="font-size:30%;"> <a href="https://dicook.github.io/mulgar_book/10-model-based.html">Table of model types</a> </span>
 </center>
 </section>
 <section id="model-based---4d-23" class="slide level2">
 <h2>Model-based - 4D <span class="f50">(2/3)</span></h2>
-
-<img data-src="slides_files/figure-revealjs/unnamed-chunk-16-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%" alt="BIC values for a range of models and number of clusters."></section>
+<div class="f50">
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a>penguins_BIC <span class="ot">&lt;-</span> <span class="fu">mclustBIC</span>(penguins_sub[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>])</span>
+<span id="cb9-2"><a href="" aria-hidden="true" tabindex="-1"></a>ggmc <span class="ot">&lt;-</span> <span class="fu">ggmcbic</span>(penguins_BIC, <span class="at">cl=</span><span class="dv">2</span><span class="sc">:</span><span class="dv">9</span>, <span class="at">top=</span><span class="dv">7</span>) <span class="sc">+</span> </span>
+<span id="cb9-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_discrete_divergingx</span>(<span class="at">palette =</span> <span class="st">"Roma"</span>) <span class="sc">+</span></span>
+<span id="cb9-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() </span>
+<span id="cb9-5"><a href="" aria-hidden="true" tabindex="-1"></a>ggmc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="slides_files/figure-revealjs/unnamed-chunk-16-1.png" class="quarto-figure quarto-figure-center" style="width:60.0%" alt="BIC values for a range of models and number of clusters."></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="model-based-33-which-fits-the-data-better" class="slide level2">
 <h2>Model-based <span class="f50">(3/3)</span> <span style="font-size:70%;"> ~~Which fits the data better? </span></h2>
 <div class="columns">
@@ -729,27 +826,6 @@ a_{~41} &amp; a_{~42}\\
 <span style="font-size:30%;"> <a href="https://dicook.github.io/mulgar_book/10-model-based.html">Table of model types</a> </span>
 </center>
 </section>
-<section id="summarising-clusters" class="slide level2">
-<h2>Summarising clusters</h2>
-<p>Convex hulls are often used to summarise clusters in 2D. It is possible to view these in high-d, too.</p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="slides_files/figure-revealjs/unnamed-chunk-19-1.png" class="quarto-figure quarto-figure-center" style="width:80.0%" alt="Convex hulls around three clusters in 2D"></p>
-</figure>
-</div>
-</div>
-</div>
-</div><div class="column fragment" style="width:50%;">
-<p><img data-src="gifs/penguins_chull.gif" alt="Tour showing 4D convex hulls for three clusters."></p>
-</div></div>
-<center>
-<span style="font-size:50%;"> Ward’s linkage hierarchical clustering </span>
-</center>
-</section>
 <section id="adapting-to-market-segmentation-12" class="slide level2">
 <h2>Adapting to market segmentation <span class="f50">(1/2)</span></h2>
 <div class="columns">
@@ -761,7 +837,7 @@ a_{~41} &amp; a_{~42}\\
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="slides_files/figure-revealjs/unnamed-chunk-20-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+<p><img data-src="slides_files/figure-revealjs/unnamed-chunk-17-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -776,7 +852,7 @@ a_{~41} &amp; a_{~42}\\
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="slides_files/figure-revealjs/unnamed-chunk-21-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+<p><img data-src="slides_files/figure-revealjs/unnamed-chunk-18-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -788,7 +864,7 @@ a_{~41} &amp; a_{~42}\\
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="slides_files/figure-revealjs/unnamed-chunk-22-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+<p><img data-src="slides_files/figure-revealjs/unnamed-chunk-19-1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -818,6 +894,33 @@ a_{~41} &amp; a_{~42}\\
 <li>Binary response: 1 (totally important), 0 (otherwise)</li>
 </ul>
 </div><div class="column">
+<div class="f50">
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">#library(lionfish)</span></span>
+<span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pytourr)</span>
+<span id="cb10-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">#data("ausActiv")</span></span>
+<span id="cb10-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(winterActiv)</span>
+<span id="cb10-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Animated gif</span></span>
+<span id="cb10-6"><a href="" aria-hidden="true" tabindex="-1"></a>activities <span class="ot">&lt;-</span> <span class="fu">colnames</span>(winterActiv)</span>
+<span id="cb10-7"><a href="" aria-hidden="true" tabindex="-1"></a>wa <span class="ot">&lt;-</span> winterActiv</span>
+<span id="cb10-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(wa) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"V"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">27</span>)</span>
+<span id="cb10-9"><a href="" aria-hidden="true" tabindex="-1"></a>wa <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(wa)</span>
+<span id="cb10-10"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">340</span>)</span>
+<span id="cb10-12"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">render_gif</span>(wa, </span>
+<span id="cb10-13"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="fu">grand_tour</span>(),</span>
+<span id="cb10-14"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="fu">display_xy</span>(<span class="at">half_range=</span><span class="dv">2</span>,</span>
+<span id="cb10-15"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">axes=</span><span class="st">"off"</span>),</span>
+<span id="cb10-16"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">gif_file =</span> <span class="st">"gifs/austrian.gif"</span>,</span>
+<span id="cb10-17"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">frames =</span> <span class="dv">300</span>,</span>
+<span id="cb10-18"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">width =</span> <span class="dv">400</span>, </span>
+<span id="cb10-19"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">height =</span> <span class="dv">300</span>,</span>
+<span id="cb10-20"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">loop =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
 <center>
 <img data-src="gifs/austrian.gif">
 </center>
@@ -826,8 +929,63 @@ a_{~41} &amp; a_{~42}\\
 </section>
 <section id="example-tourism-in-austria-23" class="slide level2">
 <h2>Example: Tourism in Austria <span class="f50">(2/3)</span></h2>
+<div class="f50">
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># perform initial k-means clustering</span></span>
+<span id="cb11-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb11-3"><a href="" aria-hidden="true" tabindex="-1"></a>wa_cl <span class="ot">=</span> <span class="fu">kmeans</span>(wa, <span class="dv">6</span>)</span>
+<span id="cb11-4"><a href="" aria-hidden="true" tabindex="-1"></a>wa_all <span class="ot">&lt;-</span> wa <span class="sc">|&gt;</span></span>
+<span id="cb11-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">cl =</span> <span class="fu">factor</span>(wa_cl<span class="sc">$</span>cluster, <span class="at">levels=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>))</span>
+<span id="cb11-6"><a href="" aria-hidden="true" tabindex="-1"></a>wa_pp <span class="ot">&lt;-</span> <span class="fu">animate_xy</span>(wa_all[,<span class="dv">1</span><span class="sc">:</span><span class="dv">27</span>], </span>
+<span id="cb11-7"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="fu">guided_tour</span>(<span class="fu">lda_pp</span>(wa_all<span class="sc">$</span>cl)), </span>
+<span id="cb11-8"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">col=</span>wa_all<span class="sc">$</span>cl,</span>
+<span id="cb11-9"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">half_range =</span> <span class="fl">2.5</span>,</span>
+<span id="cb11-10"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">axes=</span><span class="st">"off"</span>)</span>
+<span id="cb11-11"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">429</span>)</span>
+<span id="cb11-12"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">render_gif</span>(wa_all[,<span class="dv">1</span><span class="sc">:</span><span class="dv">27</span>], </span>
+<span id="cb11-13"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="fu">guided_tour</span>(<span class="fu">lda_pp</span>(wa_all<span class="sc">$</span>cl)),</span>
+<span id="cb11-14"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="fu">display_xy</span>(<span class="at">half_range=</span><span class="dv">2</span>,</span>
+<span id="cb11-15"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">axes=</span><span class="st">"off"</span>, <span class="at">col=</span>wa_all<span class="sc">$</span>cl),</span>
+<span id="cb11-16"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">gif_file =</span> <span class="st">"gifs/austrian_cl.gif"</span>,</span>
+<span id="cb11-17"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">frames =</span> <span class="dv">156</span>,</span>
+<span id="cb11-18"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">width =</span> <span class="dv">400</span>, </span>
+<span id="cb11-19"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">height =</span> <span class="dv">300</span>,</span>
+<span id="cb11-20"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">loop =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb11-21"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-22"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Examine just clusters 3 and 6</span></span>
+<span id="cb11-23"><a href="" aria-hidden="true" tabindex="-1"></a>wa_all_3_6 <span class="ot">&lt;-</span> wa_all <span class="sc">|&gt;</span></span>
+<span id="cb11-24"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(cl <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">6</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb11-25"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">cl =</span> <span class="fu">factor</span>(cl, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"3"</span>, <span class="st">"6"</span>)))</span>
+<span id="cb11-26"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">419</span>)</span>
+<span id="cb11-27"><a href="" aria-hidden="true" tabindex="-1"></a>wa_3_6_t1 <span class="ot">&lt;-</span> <span class="fu">save_history</span>(wa_all_3_6[,<span class="dv">1</span><span class="sc">:</span><span class="dv">27</span>],</span>
+<span id="cb11-28"><a href="" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">guided_tour</span>(<span class="fu">lda_pp</span>(wa_all_3_6<span class="sc">$</span>cl)))</span>
+<span id="cb11-29"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">animate_xy</span>(wa_all_3_6[,<span class="dv">1</span><span class="sc">:</span><span class="dv">27</span>], </span>
+<span id="cb11-30"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="fu">planned_tour</span>(wa_3_6_t1), </span>
+<span id="cb11-31"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">col=</span>wa_all_3_6<span class="sc">$</span>cl,</span>
+<span id="cb11-32"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">half_range =</span> <span class="fl">2.5</span>,</span>
+<span id="cb11-33"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">axes=</span><span class="st">"off"</span>)</span>
+<span id="cb11-34"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">render_gif</span>(wa_all_3_6[,<span class="dv">1</span><span class="sc">:</span><span class="dv">27</span>], </span>
+<span id="cb11-35"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="fu">planned_tour</span>(wa_3_6_t1),</span>
+<span id="cb11-36"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="fu">display_xy</span>(<span class="at">half_range=</span><span class="dv">2</span>,</span>
+<span id="cb11-37"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="at">axes=</span><span class="st">"off"</span>, <span class="at">col=</span>wa_all_3_6<span class="sc">$</span>cl),</span>
+<span id="cb11-38"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">gif_file =</span> <span class="st">"gifs/austrian_3_6.gif"</span>,</span>
+<span id="cb11-39"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">frames =</span> <span class="dv">149</span>,</span>
+<span id="cb11-40"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">width =</span> <span class="dv">400</span>, </span>
+<span id="cb11-41"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">height =</span> <span class="dv">300</span>,</span>
+<span id="cb11-42"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="at">loop =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb11-43"><a href="" aria-hidden="true" tabindex="-1"></a>wa_sep <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">act =</span> activities, </span>
+<span id="cb11-44"><a href="" aria-hidden="true" tabindex="-1"></a>                 <span class="at">proj =</span> <span class="fu">as.vector</span>(wa_3_6_t1[,<span class="dv">2</span>,<span class="dv">36</span>])) <span class="sc">|&gt;</span></span>
+<span id="cb11-45"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(proj))</span>
+<span id="cb11-46"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-47"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(wa_sep, <span class="at">file=</span><span class="st">"data/wa_sep.rda"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
 <div class="columns">
 <div class="column" style="font-size: 70%;">
+<p>Result of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>-means with Euclidean distance into 6 clusters</p>
 <center>
 <img data-src="gifs/austrian_cl.gif">
 </center>
@@ -838,6 +996,9 @@ a_{~41} &amp; a_{~42}\\
 <center>
 <img data-src="gifs/austrian_3_6.gif">
 </center>
+<div class="fragment">
+<p><em>We wouldn’t cluster the data this way, but the clustering algorithms don’t see gaps like we do.</em> See also <a href="https://cran.r-project.org/web/packages/flexclust/index.html">flexclust</a> for alternative clustering approaches.</p>
+</div>
 </div>
 </div></div>
 </section>
@@ -849,8 +1010,13 @@ a_{~41} &amp; a_{~42}\\
 <center>
 <img data-src="gifs/austrian_3_6.gif">
 </center>
+<p><br></p>
+<div class="fragment">
+<p>27 variables contributing to projection</p>
+</div>
 </div><div class="column" style="font-size: 60%;">
-<p>Cluster 6 consists of tourists who like going to health facilities, excursions and drinking wine.</p>
+<div class="fragment">
+<p>Cluster 6 consists of tourists who like going to health facilities and drinking wine.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 2
@@ -863,7 +1029,9 @@ a_{~41} &amp; a_{~42}\\
 5 excursions              0.0728</code></pre>
 </div>
 </div>
-<p>Cluster 3 consists of tourists who very much like going to a disco or bar, with some interest in alpine activities and theatre/opera.</p>
+</div>
+<div class="fragment">
+<p>Cluster 3 consists of tourists who very much like going to a disco or bar.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 2
@@ -876,19 +1044,21 @@ a_{~41} &amp; a_{~42}\\
 5 going.to.discos.bars -0.889</code></pre>
 </div>
 </div>
+</div>
 </div></div>
 </section>
 <section id="summary" class="slide level2">
 <h2>Summary</h2>
 <div class="f90">
 <p>The <a href="http://ggobi.github.io/tourr/">tourr</a> package provides the algorithm to generate the tour paths of projection bases, and also the ability to create new tours, and draw projections with a variety of different display methods.</p>
-<p>With market segmentation, it is used to examine where the partitions are made:</p>
+<p>With market segmentation, it is used to examine where the partitions are made, to address questions like:</p>
 <ul>
-<li>Are these sensible?</li>
+<li>Are the partitions sensible?</li>
 <li>Would some adjustment produce a more useful partition?</li>
 <li>Can the solution be simplified, and be equally effective?</li>
 </ul>
 </div>
+<p>All of these are easier with <em>direct manipulation interactive graphics</em> tools: stay tuned for <strong>Dr Laa’s presentation next</strong>!</p>
 </section>
 <section id="high-d-vis-intellectually-challenging-and-fun" class="slide level2 center">
 <h2>High-d vis intellectually challenging, and fun!</h2>
@@ -975,20 +1145,67 @@ a_{~41} &amp; a_{~42}\\
 <p>Givens interpolation ends at requested frame, but geodesic interpolation arrives at the plane, is frame-agnostic, and that is problematic for optimisation using the guided tour.</p>
 </div>
 </section>
+<section id="summarising-clusters" class="slide level2" data-visibility="uncounted">
+<h2>Summarising clusters</h2>
+<p>Convex hulls are often used to summarise clusters in 2D. It is possible to view these in high-d, too.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="" aria-hidden="true" tabindex="-1"></a>p_dist <span class="ot">&lt;-</span> <span class="fu">dist</span>(penguins_sub[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>])</span>
+<span id="cb14-2"><a href="" aria-hidden="true" tabindex="-1"></a>p_hcw <span class="ot">&lt;-</span> <span class="fu">hclust</span>(p_dist, <span class="at">method=</span><span class="st">"ward.D2"</span>)</span>
+<span id="cb14-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="" aria-hidden="true" tabindex="-1"></a>p_cl <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">cl_w =</span> <span class="fu">cutree</span>(p_hcw, <span class="dv">3</span>))</span>
+<span id="cb14-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="" aria-hidden="true" tabindex="-1"></a>penguins_mc <span class="ot">&lt;-</span> <span class="fu">Mclust</span>(penguins_sub[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>], </span>
+<span id="cb14-7"><a href="" aria-hidden="true" tabindex="-1"></a>                      <span class="at">G=</span><span class="dv">3</span>, </span>
+<span id="cb14-8"><a href="" aria-hidden="true" tabindex="-1"></a>                      <span class="at">modelNames =</span> <span class="st">"EEE"</span>)</span>
+<span id="cb14-9"><a href="" aria-hidden="true" tabindex="-1"></a>p_cl <span class="ot">&lt;-</span> p_cl <span class="sc">%&gt;%</span> </span>
+<span id="cb14-10"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">cl_mc =</span> penguins_mc<span class="sc">$</span>classification)</span>
+<span id="cb14-11"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="" aria-hidden="true" tabindex="-1"></a>p_cl <span class="ot">&lt;-</span> p_cl <span class="sc">%&gt;%</span> </span>
+<span id="cb14-13"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">cl_w_j =</span> <span class="fu">jitter</span>(cl_w),</span>
+<span id="cb14-14"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="at">cl_mc_j =</span> <span class="fu">jitter</span>(cl_mc))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="" aria-hidden="true" tabindex="-1"></a>p_chull2D </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="slides_files/figure-revealjs/unnamed-chunk-27-1.png" class="quarto-figure quarto-figure-center" style="width:80.0%" alt="Convex hulls around three clusters in 2D"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column fragment" style="width:50%;">
+<p><img data-src="gifs/penguins_chull.gif" alt="Tour showing 4D convex hulls for three clusters."></p>
+</div></div>
+<center>
+<span style="font-size:50%;"> Ward’s linkage hierarchical clustering </span>
+</center>
+</section>
 <section id="interactivity-exploration" class="slide level2" data-visibility="uncounted">
 <h2>Interactivity: exploration</h2>
 <p>If you want to discover and mark the clusters you see, you can use the <a href="https://casperhart.github.io/detourr/">detourr</a> package to spin and brush points. Here’s a live demo. Hopefully this works.</p>
 <p><br></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(detourr)</span>
-<span id="cb6-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">645</span>)</span>
-<span id="cb6-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">detour</span>(penguins_sub[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>], </span>
-<span id="cb6-4"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">tour_aes</span>(<span class="at">projection =</span> bl<span class="sc">:</span>bm)) <span class="sc">|&gt;</span></span>
-<span id="cb6-5"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">tour_path</span>(<span class="fu">grand_tour</span>(<span class="dv">2</span>), <span class="at">fps =</span> <span class="dv">60</span>, </span>
-<span id="cb6-6"><a href="" aria-hidden="true" tabindex="-1"></a>                 <span class="at">max_bases=</span><span class="dv">40</span>) <span class="sc">|&gt;</span></span>
-<span id="cb6-7"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">show_scatter</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, </span>
-<span id="cb6-8"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">axes =</span> <span class="cn">FALSE</span>, </span>
-<span id="cb6-9"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">size =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(detourr)</span>
+<span id="cb16-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">645</span>)</span>
+<span id="cb16-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">detour</span>(penguins_sub[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>], </span>
+<span id="cb16-4"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">tour_aes</span>(<span class="at">projection =</span> bl<span class="sc">:</span>bm)) <span class="sc">|&gt;</span></span>
+<span id="cb16-5"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">tour_path</span>(<span class="fu">grand_tour</span>(<span class="dv">2</span>), <span class="at">fps =</span> <span class="dv">60</span>, </span>
+<span id="cb16-6"><a href="" aria-hidden="true" tabindex="-1"></a>                 <span class="at">max_bases=</span><span class="dv">40</span>) <span class="sc">|&gt;</span></span>
+<span id="cb16-7"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">show_scatter</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, </span>
+<span id="cb16-8"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">axes =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb16-9"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">size =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <br>
 <center>
@@ -997,27 +1214,58 @@ DEMO
 </section>
 <section id="interactivity-compare-cluster-models" class="slide level2" data-visibility="uncounted">
 <h2>Interactivity: Compare cluster models</h2>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="" aria-hidden="true" tabindex="-1"></a>p_dist <span class="ot">&lt;-</span> <span class="fu">dist</span>(penguins_sub[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>])</span>
+<span id="cb17-2"><a href="" aria-hidden="true" tabindex="-1"></a>p_hcw <span class="ot">&lt;-</span> <span class="fu">hclust</span>(p_dist, <span class="at">method=</span><span class="st">"ward.D2"</span>)</span>
+<span id="cb17-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="" aria-hidden="true" tabindex="-1"></a>p_cl <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">cl_w =</span> <span class="fu">cutree</span>(p_hcw, <span class="dv">3</span>))</span>
+<span id="cb17-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="" aria-hidden="true" tabindex="-1"></a>penguins_mc <span class="ot">&lt;-</span> <span class="fu">Mclust</span>(penguins_sub[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>], </span>
+<span id="cb17-7"><a href="" aria-hidden="true" tabindex="-1"></a>                      <span class="at">G=</span><span class="dv">3</span>, </span>
+<span id="cb17-8"><a href="" aria-hidden="true" tabindex="-1"></a>                      <span class="at">modelNames =</span> <span class="st">"EEE"</span>)</span>
+<span id="cb17-9"><a href="" aria-hidden="true" tabindex="-1"></a>p_cl <span class="ot">&lt;-</span> p_cl <span class="sc">%&gt;%</span> </span>
+<span id="cb17-10"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">cl_mc =</span> penguins_mc<span class="sc">$</span>classification)</span>
+<span id="cb17-11"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-12"><a href="" aria-hidden="true" tabindex="-1"></a>p_cl <span class="ot">&lt;-</span> p_cl <span class="sc">%&gt;%</span> </span>
+<span id="cb17-13"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">cl_w_j =</span> <span class="fu">jitter</span>(cl_w),</span>
+<span id="cb17-14"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="at">cl_mc_j =</span> <span class="fu">jitter</span>(cl_mc))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 <div class="columns">
 <div class="column" style="width:40%;">
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb18-2"><a href="" aria-hidden="true" tabindex="-1"></a>p_cl <span class="sc">%&gt;%</span> </span>
+<span id="cb18-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(cl_w, cl_mc) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> cl_mc, </span>
+<span id="cb18-5"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_from =</span> n, </span>
+<span id="cb18-6"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_fill =</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb18-7"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb18-8"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">"cl_mc"</span>, <span class="at">columns=</span><span class="fu">c</span>(<span class="st">`</span><span class="at">1</span><span class="st">`</span>, <span class="st">`</span><span class="at">2</span><span class="st">`</span>, <span class="st">`</span><span class="at">3</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb18-9"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_width</span>(<span class="fu">everything</span>() <span class="sc">~</span> <span class="fu">px</span>(<span class="dv">60</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
-<div id="phomurtrsv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#phomurtrsv table {
+<div id="xihgsqrlzg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#xihgsqrlzg table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#phomurtrsv thead, #phomurtrsv tbody, #phomurtrsv tfoot, #phomurtrsv tr, #phomurtrsv td, #phomurtrsv th {
+#xihgsqrlzg thead, #xihgsqrlzg tbody, #xihgsqrlzg tfoot, #xihgsqrlzg tr, #xihgsqrlzg td, #xihgsqrlzg th {
   border-style: none;
 }
 
-#phomurtrsv p {
+#xihgsqrlzg p {
   margin: 0;
   padding: 0;
 }
 
-#phomurtrsv .gt_table {
+#xihgsqrlzg .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1043,12 +1291,12 @@ DEMO
   border-left-color: #D3D3D3;
 }
 
-#phomurtrsv .gt_caption {
+#xihgsqrlzg .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#phomurtrsv .gt_title {
+#xihgsqrlzg .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1060,7 +1308,7 @@ DEMO
   border-bottom-width: 0;
 }
 
-#phomurtrsv .gt_subtitle {
+#xihgsqrlzg .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1072,7 +1320,7 @@ DEMO
   border-top-width: 0;
 }
 
-#phomurtrsv .gt_heading {
+#xihgsqrlzg .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1084,13 +1332,13 @@ DEMO
   border-right-color: #D3D3D3;
 }
 
-#phomurtrsv .gt_bottom_border {
+#xihgsqrlzg .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#phomurtrsv .gt_col_headings {
+#xihgsqrlzg .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1105,7 +1353,7 @@ DEMO
   border-right-color: #D3D3D3;
 }
 
-#phomurtrsv .gt_col_heading {
+#xihgsqrlzg .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1125,7 +1373,7 @@ DEMO
   overflow-x: hidden;
 }
 
-#phomurtrsv .gt_column_spanner_outer {
+#xihgsqrlzg .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1137,15 +1385,15 @@ DEMO
   padding-right: 4px;
 }
 
-#phomurtrsv .gt_column_spanner_outer:first-child {
+#xihgsqrlzg .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#phomurtrsv .gt_column_spanner_outer:last-child {
+#xihgsqrlzg .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#phomurtrsv .gt_column_spanner {
+#xihgsqrlzg .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1157,11 +1405,11 @@ DEMO
   width: 100%;
 }
 
-#phomurtrsv .gt_spanner_row {
+#xihgsqrlzg .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#phomurtrsv .gt_group_heading {
+#xihgsqrlzg .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1187,7 +1435,7 @@ DEMO
   text-align: left;
 }
 
-#phomurtrsv .gt_empty_group_heading {
+#xihgsqrlzg .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1202,15 +1450,15 @@ DEMO
   vertical-align: middle;
 }
 
-#phomurtrsv .gt_from_md > :first-child {
+#xihgsqrlzg .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#phomurtrsv .gt_from_md > :last-child {
+#xihgsqrlzg .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#phomurtrsv .gt_row {
+#xihgsqrlzg .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1229,7 +1477,7 @@ DEMO
   overflow-x: hidden;
 }
 
-#phomurtrsv .gt_stub {
+#xihgsqrlzg .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1242,7 +1490,7 @@ DEMO
   padding-right: 5px;
 }
 
-#phomurtrsv .gt_stub_row_group {
+#xihgsqrlzg .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1256,15 +1504,15 @@ DEMO
   vertical-align: top;
 }
 
-#phomurtrsv .gt_row_group_first td {
+#xihgsqrlzg .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#phomurtrsv .gt_row_group_first th {
+#xihgsqrlzg .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#phomurtrsv .gt_summary_row {
+#xihgsqrlzg .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1274,16 +1522,16 @@ DEMO
   padding-right: 5px;
 }
 
-#phomurtrsv .gt_first_summary_row {
+#xihgsqrlzg .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#phomurtrsv .gt_first_summary_row.thick {
+#xihgsqrlzg .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#phomurtrsv .gt_last_summary_row {
+#xihgsqrlzg .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1293,7 +1541,7 @@ DEMO
   border-bottom-color: #D3D3D3;
 }
 
-#phomurtrsv .gt_grand_summary_row {
+#xihgsqrlzg .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1303,7 +1551,7 @@ DEMO
   padding-right: 5px;
 }
 
-#phomurtrsv .gt_first_grand_summary_row {
+#xihgsqrlzg .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1313,7 +1561,7 @@ DEMO
   border-top-color: #D3D3D3;
 }
 
-#phomurtrsv .gt_last_grand_summary_row_top {
+#xihgsqrlzg .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1323,11 +1571,11 @@ DEMO
   border-bottom-color: #D3D3D3;
 }
 
-#phomurtrsv .gt_striped {
+#xihgsqrlzg .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#phomurtrsv .gt_table_body {
+#xihgsqrlzg .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1336,7 +1584,7 @@ DEMO
   border-bottom-color: #D3D3D3;
 }
 
-#phomurtrsv .gt_footnotes {
+#xihgsqrlzg .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1350,7 +1598,7 @@ DEMO
   border-right-color: #D3D3D3;
 }
 
-#phomurtrsv .gt_footnote {
+#xihgsqrlzg .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1359,7 +1607,7 @@ DEMO
   padding-right: 5px;
 }
 
-#phomurtrsv .gt_sourcenotes {
+#xihgsqrlzg .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1373,7 +1621,7 @@ DEMO
   border-right-color: #D3D3D3;
 }
 
-#phomurtrsv .gt_sourcenote {
+#xihgsqrlzg .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1381,63 +1629,63 @@ DEMO
   padding-right: 5px;
 }
 
-#phomurtrsv .gt_left {
+#xihgsqrlzg .gt_left {
   text-align: left;
 }
 
-#phomurtrsv .gt_center {
+#xihgsqrlzg .gt_center {
   text-align: center;
 }
 
-#phomurtrsv .gt_right {
+#xihgsqrlzg .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#phomurtrsv .gt_font_normal {
+#xihgsqrlzg .gt_font_normal {
   font-weight: normal;
 }
 
-#phomurtrsv .gt_font_bold {
+#xihgsqrlzg .gt_font_bold {
   font-weight: bold;
 }
 
-#phomurtrsv .gt_font_italic {
+#xihgsqrlzg .gt_font_italic {
   font-style: italic;
 }
 
-#phomurtrsv .gt_super {
+#xihgsqrlzg .gt_super {
   font-size: 65%;
 }
 
-#phomurtrsv .gt_footnote_marks {
+#xihgsqrlzg .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#phomurtrsv .gt_asterisk {
+#xihgsqrlzg .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#phomurtrsv .gt_indent_1 {
+#xihgsqrlzg .gt_indent_1 {
   text-indent: 5px;
 }
 
-#phomurtrsv .gt_indent_2 {
+#xihgsqrlzg .gt_indent_2 {
   text-indent: 10px;
 }
 
-#phomurtrsv .gt_indent_3 {
+#xihgsqrlzg .gt_indent_3 {
   text-indent: 15px;
 }
 
-#phomurtrsv .gt_indent_4 {
+#xihgsqrlzg .gt_indent_4 {
   text-indent: 20px;
 }
 
-#phomurtrsv .gt_indent_5 {
+#xihgsqrlzg .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1478,6 +1726,14 @@ DEMO
 
 </div>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="" aria-hidden="true" tabindex="-1"></a>penguins_cl <span class="ot">&lt;-</span> penguins_sub <span class="sc">%&gt;%</span></span>
+<span id="cb19-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">cl_w_j =</span> p_cl<span class="sc">$</span>cl_w_j,</span>
+<span id="cb19-3"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="at">cl_mc_j =</span> p_cl<span class="sc">$</span>cl_mc_j) <span class="sc">%&gt;%</span></span>
+<span id="cb19-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">cl_w =</span> <span class="fu">factor</span>(p_cl<span class="sc">$</span>cl_w),</span>
+<span id="cb19-5"><a href="" aria-hidden="true" tabindex="-1"></a>         <span class="at">cl_mc =</span> <span class="fu">factor</span>(p_cl<span class="sc">$</span>cl_mc)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <center>
 DEMO
@@ -1502,34 +1758,37 @@ c_{~n1} &amp; c_{~n2} \end{array} \right]_{~n\times 2}
 </div>
 </div><div class="column" style="width:60%;">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(crosstalk)</span>
-<span id="cb7-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
-<span id="cb7-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(viridis)</span>
-<span id="cb7-4"><a href="" aria-hidden="true" tabindex="-1"></a>p_cl_shared <span class="ot">&lt;-</span> SharedData<span class="sc">$</span><span class="fu">new</span>(penguins_cl)</span>
-<span id="cb7-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="" aria-hidden="true" tabindex="-1"></a>detour_plot <span class="ot">&lt;-</span> <span class="fu">detour</span>(p_cl_shared, <span class="fu">tour_aes</span>(</span>
-<span id="cb7-7"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">projection =</span> bl<span class="sc">:</span>bm,</span>
-<span id="cb7-8"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">colour =</span> cl_w)) <span class="sc">|&gt;</span></span>
-<span id="cb7-9"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tour_path</span>(<span class="fu">grand_tour</span>(<span class="dv">2</span>), </span>
-<span id="cb7-10"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">max_bases=</span><span class="dv">50</span>, <span class="at">fps =</span> <span class="dv">60</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-11"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">show_scatter</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">axes =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb7-12"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">width =</span> <span class="st">"100%"</span>, <span class="at">height =</span> <span class="st">"450px"</span>)</span>
-<span id="cb7-13"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-14"><a href="" aria-hidden="true" tabindex="-1"></a>conf_mat <span class="ot">&lt;-</span> <span class="fu">plot_ly</span>(p_cl_shared, </span>
-<span id="cb7-15"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">x =</span> <span class="sc">~</span>cl_mc_j,</span>
-<span id="cb7-16"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">y =</span> <span class="sc">~</span>cl_w_j,</span>
-<span id="cb7-17"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">color =</span> <span class="sc">~</span>cl_w,</span>
-<span id="cb7-18"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">colors =</span> <span class="fu">viridis_pal</span>(<span class="at">option =</span> <span class="st">"D"</span>)(<span class="dv">3</span>),</span>
-<span id="cb7-19"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">height =</span> <span class="dv">450</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-20"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">highlight</span>(<span class="at">on =</span> <span class="st">"plotly_selected"</span>, </span>
-<span id="cb7-21"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">off =</span> <span class="st">"plotly_doubleclick"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb7-22"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_trace</span>(<span class="at">type =</span> <span class="st">"scatter"</span>, </span>
-<span id="cb7-23"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">mode =</span> <span class="st">"markers"</span>)</span>
-<span id="cb7-24"><a href="" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb7-25"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">bscols</span>(</span>
-<span id="cb7-26"><a href="" aria-hidden="true" tabindex="-1"></a>     detour_plot, conf_mat,</span>
-<span id="cb7-27"><a href="" aria-hidden="true" tabindex="-1"></a>     <span class="at">widths =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">6</span>)</span>
-<span id="cb7-28"><a href="" aria-hidden="true" tabindex="-1"></a> )                 </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(crosstalk)</span>
+<span id="cb20-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb20-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(viridis)</span>
+<span id="cb20-4"><a href="" aria-hidden="true" tabindex="-1"></a>p_cl_shared <span class="ot">&lt;-</span> SharedData<span class="sc">$</span><span class="fu">new</span>(penguins_cl)</span>
+<span id="cb20-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-6"><a href="" aria-hidden="true" tabindex="-1"></a>detour_plot <span class="ot">&lt;-</span> <span class="fu">detour</span>(p_cl_shared, <span class="fu">tour_aes</span>(</span>
+<span id="cb20-7"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">projection =</span> bl<span class="sc">:</span>bm,</span>
+<span id="cb20-8"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="at">colour =</span> cl_w)) <span class="sc">|&gt;</span></span>
+<span id="cb20-9"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tour_path</span>(<span class="fu">grand_tour</span>(<span class="dv">2</span>), </span>
+<span id="cb20-10"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">max_bases=</span><span class="dv">50</span>, <span class="at">fps =</span> <span class="dv">60</span>) <span class="sc">|&gt;</span></span>
+<span id="cb20-11"><a href="" aria-hidden="true" tabindex="-1"></a>       <span class="fu">show_scatter</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">axes =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb20-12"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">width =</span> <span class="st">"100%"</span>, <span class="at">height =</span> <span class="st">"450px"</span>)</span>
+<span id="cb20-13"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-14"><a href="" aria-hidden="true" tabindex="-1"></a>conf_mat <span class="ot">&lt;-</span> <span class="fu">plot_ly</span>(p_cl_shared, </span>
+<span id="cb20-15"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">x =</span> <span class="sc">~</span>cl_mc_j,</span>
+<span id="cb20-16"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">y =</span> <span class="sc">~</span>cl_w_j,</span>
+<span id="cb20-17"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">color =</span> <span class="sc">~</span>cl_w,</span>
+<span id="cb20-18"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">colors =</span> <span class="fu">viridis_pal</span>(<span class="at">option =</span> <span class="st">"D"</span>)(<span class="dv">3</span>),</span>
+<span id="cb20-19"><a href="" aria-hidden="true" tabindex="-1"></a>                    <span class="at">height =</span> <span class="dv">450</span>) <span class="sc">|&gt;</span></span>
+<span id="cb20-20"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">highlight</span>(<span class="at">on =</span> <span class="st">"plotly_selected"</span>, </span>
+<span id="cb20-21"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">off =</span> <span class="st">"plotly_doubleclick"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb20-22"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_trace</span>(<span class="at">type =</span> <span class="st">"scatter"</span>, </span>
+<span id="cb20-23"><a href="" aria-hidden="true" tabindex="-1"></a>              <span class="at">mode =</span> <span class="st">"markers"</span>)</span>
+<span id="cb20-24"><a href="" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-25"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">bscols</span>(</span>
+<span id="cb20-26"><a href="" aria-hidden="true" tabindex="-1"></a>     detour_plot, conf_mat,</span>
+<span id="cb20-27"><a href="" aria-hidden="true" tabindex="-1"></a>     <span class="at">widths =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">6</span>)</span>
+<span id="cb20-28"><a href="" aria-hidden="true" tabindex="-1"></a> )                 </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </div></div>
 
@@ -1538,7 +1797,7 @@ c_{~n1} &amp; c_{~n2} \end{array} \right]_{~n\times 2}
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
-<p>DAGStat 2025</p>
+<p>DAGStat 2025 - https://dicook.github.io/DAGStat_2025/</p>
 </div>
 </div></div>
 
@@ -1549,7 +1808,6 @@ c_{~n1} &amp; c_{~n2} \end{array} \right]_{~n\times 2}
   <script src="slides_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
   <script src="slides_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
   <script src="slides_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="slides_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
   <script src="slides_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
@@ -1570,8 +1828,7 @@ c_{~n1} &amp; c_{~n2} \end{array} \right]_{~n\times 2}
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'chalkboard': {"buttons":true},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -1725,7 +1982,7 @@ c_{~n1} &amp; c_{~n2} \end{array} \right]_{~n\times 2}
         margin: 5.0e-2,
 
         // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
 
           RevealNotes,
           RevealSearch,

@@ -11,13 +11,14 @@ format:
     width: 1280
     height: 800
     margin: 0.05
-    chalkboard: true
+    chalkboard: false
     background-transition: fade
 code-line-numbers: false
 message: false
 highlight-style: pygments
 html-math-method: mathml
-footer: "DAGStat 2025"
+code-fold: true
+footer: "DAGStat 2025 - https://dicook.github.io/DAGStat_2025/"
 ---
 
 ```{r, include = FALSE}
@@ -43,7 +44,7 @@ knitr::opts_chunk$set(
   fig.align = "center",
   dev.args = list(bg = 'transparent'),
   fig.retina = 3,
-  echo = FALSE,
+  echo = TRUE,
   warning = FALSE,
   message = FALSE,
   cache = FALSE
@@ -85,9 +86,9 @@ It doesn't mean that it's easy. It doesn't mean that visualisation is used alone
 - Why use a tour
 - Algorithms in the [tourr](http://ggobi.github.io/tourr/) package
 - New developments in recent years
-- Using tours to understand dimension reduction and clustering
-- Applying to market segmentation 
-- Future research directions
+- Model in the data space philosophy
+- Using tours for clustering
+- Application in market segmentation 
 
 ## High-dimensional visualisation
 
@@ -249,7 +250,7 @@ watching the 1D shadows we can see:
 #| echo: false
 #| fig-width: 3
 #| fig-height: 3
-#| out-width: 100%
+#| out-width: 80%
 #| fig-alt: "Scatterplot showing the 2D data having two clusters."
 data("simple_clusters")
 
@@ -366,6 +367,7 @@ See:
 ## High-dimensional visualisation
 
 ```{r}
+#| echo: false
 penguins <- penguins %>%
   na.omit() # 11 observations out of 344 removed
 # use only vars of interest, and standardise
@@ -386,6 +388,7 @@ penguins_sub <- penguins %>%
 
 ```{r}
 #| eval: false
+#| echo: false
 set.seed(645)
 render_gif(penguins_sub[,1:4],
            grand_tour(),
@@ -483,6 +486,8 @@ Avoid being a blind man inspecting the elephant
 
 Principal component analysis
 
+::: {.f50}
+
 ```{r}
 #| fig-alt: "Principal component biplot of the penguins data."
 p_pca <- prcomp(penguins_sub[,1:4])
@@ -490,12 +495,15 @@ autoplot(p_pca, loadings = TRUE,
          loadings.label = TRUE) +
   theme(aspect.ratio=1)
 ```
+:::
 
 :::
 
 ::: {.column width=50% .f60}
 
 NLDR: t-Stochastic neighbourhood embedding
+
+::: {.f50}
 
 ```{r}
 #| fig-alt: "Dimension reduction with t-SNE on the penguins data shown as a scatterplot."
@@ -506,6 +514,7 @@ ggplot(p_tsne_df, aes(x=tsneX, y=tsneY)) +
   geom_point() +
   theme(aspect.ratio=1)
 ```
+:::
 
 :::
 
@@ -519,6 +528,8 @@ Data in the model space [^1]
 
 [^1]: Wickham et al (2015) https://doi.org/10.1002/sam.11271
 
+::: {.f50}
+
 ```{r}
 #| fig-alt: "Principal component biplot of the penguins data."
 p_pca <- prcomp(penguins_sub[,1:4])
@@ -527,10 +538,13 @@ autoplot(p_pca, loadings = TRUE,
   theme(aspect.ratio=1)
 ```
 :::
+:::
 
 ::: {.column .f60 width=50%}
 
 Model in the data space
+
+::: {.f50}
 
 ```{r}
 #| eval: false
@@ -557,6 +571,7 @@ render_gif(p_pca_m_d,
            loop=FALSE)
 
 ```
+:::
 
 ![](gifs/p_pca_model.gif){width=400}
 
@@ -570,6 +585,8 @@ render_gif(p_pca_m_d,
 
 Data in the model space
 
+::: {.f50}
+
 ```{r}
 #| fig-alt: "Dimension reduction with t-SNE on the penguins data shown as a scatterplot."
 set.seed(2022)
@@ -579,6 +596,7 @@ ggplot(p_tsne_df, aes(x=tsneX, y=tsneY)) +
   geom_point() +
   theme(aspect.ratio=1)
 ```
+:::
 :::
 
 ::: {.column .f70 width=50%}
@@ -600,7 +618,8 @@ Model in the data space
 
 ## Hiding in high-d [(1/2)]{.f50}
 
-::: {.f70} 
+::: {.f50} 
+
 ```{r}
 #| code-fold: true
 #| echo: true
@@ -642,7 +661,7 @@ d_r <- d %>%
 
 ## Hiding in high-d [(2/2)]{.f50}
 
-::: {.f70} 
+::: {.f50} 
 
 ```{r}
 #| code-fold: true
@@ -881,6 +900,8 @@ Classification tree
 
 ## Model-based - 2D [(1/3)]{.f50} 
 
+::: {.f50}
+
 ```{r}
 #| fig-width: 8
 #| fig-alt: "BIC values for a range of models and number of clusters for 2D data, alongside a plot of the data with the ellipses corresponding to the best model overlaid."
@@ -911,13 +932,16 @@ ggell <- ggplot() +
   ggtitle("Best model: EVE")
 ggmc + ggell + plot_layout(ncol=2)
 ```
+:::
 
 <center> <span style="font-size:30%;"> [Table of model types](https://dicook.github.io/mulgar_book/10-model-based.html) </span> </center>
 
 ## Model-based - 4D [(2/3)]{.f50}
 
+::: {.f50}
 ```{r}
 #| fig-width: 6
+#| out-width: 60%
 #| fig-alt: "BIC values for a range of models and number of clusters."
 penguins_BIC <- mclustBIC(penguins_sub[,1:4])
 ggmc <- ggmcbic(penguins_BIC, cl=2:9, top=7) + 
@@ -925,6 +949,7 @@ ggmc <- ggmcbic(penguins_BIC, cl=2:9, top=7) +
   theme_minimal() 
 ggmc
 ```
+:::
 
 ## Model-based [(3/3)]{.f50} <span style="font-size:70%;"> ~~Which fits the data better? </span> 
 
@@ -947,101 +972,6 @@ Three-cluster EEE
 ::::
 
 <center> <span style="font-size:30%;"> [Table of model types](https://dicook.github.io/mulgar_book/10-model-based.html) </span> </center>
-
-## Summarising clusters 
-
-
-Convex hulls are often used to summarise clusters in 2D. It is possible to view these in high-d, too.
-
-:::: {.columns}
-
-::: {.column width=50%}
-
-```{r}
-p_dist <- dist(penguins_sub[,1:4])
-p_hcw <- hclust(p_dist, method="ward.D2")
-
-p_cl <- data.frame(cl_w = cutree(p_hcw, 3))
-
-penguins_mc <- Mclust(penguins_sub[,1:4], 
-                      G=3, 
-                      modelNames = "EEE")
-p_cl <- p_cl %>% 
-  mutate(cl_mc = penguins_mc$classification)
-
-p_cl <- p_cl %>% 
-  mutate(cl_w_j = jitter(cl_w),
-         cl_mc_j = jitter(cl_mc))
-```
-
-
-```{r}
-#| echo: false
-# Arranging by cluster id is important to define edges 
-penguins_cl <- penguins_sub %>%
-  mutate(cl_w = p_cl$cl_w,
-         cl_mc = p_cl$cl_mc) %>%
-  arrange(cl_w)
-
-psub <- penguins_cl %>%
-  select(bl, bd) 
-dup <- duplicated(psub)
-psub <- penguins_cl %>%
-  select(bl, bd, cl_w) %>%
-  filter(!dup) %>%
-  arrange(cl_w)
-
-ncl <- psub %>%
-  count(cl_w) %>%
-  arrange(cl_w) %>%
-  mutate(cumn = cumsum(n))
-phull <- NULL
-for (i in unique(psub$cl_w)) {
-  x <- psub %>%
-    dplyr::filter(cl_w == i) %>%
-    select(bl, bd) 
-  ph <- cxhull(as.matrix(x))$edges
-  if (i > 1) {
-    ph <- ph + ncl$cumn[i-1]
-  }
-  ph <- cbind(ph, rep(i, nrow(ph)))
-  phull <- rbind(phull, ph)
-}
-phull <- as.data.frame(phull)
-colnames(phull) <- c("from", "to", "cl_w") 
-phull_segs <- data.frame(x = psub$bl[phull$from],
-                         y = psub$bd[phull$from],
-                         xend = psub$bl[phull$to],
-                         yend = psub$bd[phull$to],
-                         cl_w = phull$cl_w)
-phull_segs$cl_w <- factor(phull$cl_w) 
-psub$cl_w <- factor(psub$cl_w)
-p_chull2D <- ggplot() +
-  geom_point(data=psub, aes(x=bl, y=bd, 
-                            colour=cl_w)) + 
-  geom_segment(data=phull_segs, aes(x=x, xend=xend,
-                                    y=y, yend=yend,
-                                    colour=cl_w)) +
-  scale_colour_discrete_divergingx(palette = "Zissou 1") +
-  theme_minimal() +
-  theme(aspect.ratio = 1)
-```
-
-```{r}
-#| fig-alt: "Convex hulls around three clusters in 2D"
-p_chull2D 
-```
-:::
-
-::: {.column width=50% .fragment}
-
-![](gifs/penguins_chull.gif){fig-alt="Tour showing 4D convex hulls for three clusters."}
-:::
-
-::::
-
-<center> <span style="font-size:50%;"> Ward's linkage hierarchical clustering </span> </center>
-
 
 
 ## Adapting to market segmentation [(1/2)]{.f50} 
@@ -1233,6 +1163,8 @@ Austrian Winter Activities
 :::
 ::: {.column}
 
+::: {.f50}
+
 ```{r}
 #| eval: false
 #library(lionfish)
@@ -1256,11 +1188,8 @@ render_gif(wa,
            height = 300,
            loop = FALSE)
 
-# Clustering
-
-# Manual tour and slicing
-
 ```
+:::
 
 <center>
 ![](gifs/austrian.gif)
@@ -1273,6 +1202,8 @@ render_gif(wa,
 [Data from Leisch, F., Dolnicar, S., Grün, B. (2018)](){style="font-size: 50%;"}
 
 ## Example: Tourism in Austria [(2/3)]{.f50}
+
+::: {.f50}
 
 ```{r}
 #| eval: false
@@ -1324,8 +1255,12 @@ wa_sep <- tibble(act = activities,
 
 save(wa_sep, file="data/wa_sep.rda")
 ```
+:::
+
 :::: {.columns}
 ::: {.column style="font-size: 70%;"}
+
+Result of $k$-means with Euclidean distance into 6 clusters
 
 <center>
 ![](gifs/austrian_cl.gif)
@@ -1343,6 +1278,11 @@ Focus on two clusters only.
 <center>
 ![](gifs/austrian_3_6.gif)
 </center>
+
+::: {.fragment}
+*We wouldn't cluster the data this way, but the clustering algorithms don't see gaps like we do.* See also [flexclust](https://cran.r-project.org/web/packages/flexclust/index.html) for alternative clustering approaches.
+:::
+
 :::
 
 :::
@@ -1359,11 +1299,18 @@ First find the **separation, then** examine the **combination** of variables.
 ![](gifs/austrian_3_6.gif)
 </center>
 
+<br>
+
+::: {.fragment}
+27 variables contributing to projection 
+:::
+
 :::
 
 ::: {.column style="font-size: 60%;"}
 
-Cluster 6 consists of tourists who like going to health facilities, excursions and drinking wine. 
+::: {.fragment}
+Cluster 6 consists of tourists who like going to health facilities and drinking wine. 
 
 ```{r}
 #| echo: false
@@ -1371,12 +1318,16 @@ load("data/wa_sep.rda")
 wa_sep[1:5,]
 ```
 
-Cluster 3 consists of tourists who very much like going to a disco or bar, with some interest in alpine activities and theatre/opera.
+:::
+
+::: {.fragment}
+Cluster 3 consists of tourists who very much like going to a disco or bar.
 
 ```{r}
 #| echo: false
 wa_sep[23:27,]
 ```
+:::
 
 :::
 ::::
@@ -1386,12 +1337,14 @@ wa_sep[23:27,]
 ::: {.f90}
 The [tourr](http://ggobi.github.io/tourr/) package provides the algorithm to generate the tour paths of projection bases, and also the ability to create new tours, and draw projections with a variety of different display methods. 
 
-With market segmentation, it is used to examine where the partitions are made: 
+With market segmentation, it is used to examine where the partitions are made, to address questions like: 
 
-- Are these sensible? 
+- Are the partitions sensible? 
 - Would some adjustment produce a more useful partition? 
 - Can the solution be simplified, and be equally effective?
 :::
+
+All of these are easier with *direct manipulation interactive graphics* tools: stay tuned for **Dr Laa's presentation next**!
 
 ## High-d vis intellectually challenging, and fun! {.center}
 
@@ -1515,6 +1468,99 @@ TARGET BASIS (would show dog if we could find)
 ::: {.fragment .f70}
 Givens interpolation ends at requested frame, but geodesic interpolation arrives at the plane, is frame-agnostic, and that is problematic for optimisation using the guided tour.
 :::
+
+## Summarising clusters {visibility="uncounted"}
+
+Convex hulls are often used to summarise clusters in 2D. It is possible to view these in high-d, too.
+
+:::: {.columns}
+
+::: {.column width=50%}
+
+```{r}
+p_dist <- dist(penguins_sub[,1:4])
+p_hcw <- hclust(p_dist, method="ward.D2")
+
+p_cl <- data.frame(cl_w = cutree(p_hcw, 3))
+
+penguins_mc <- Mclust(penguins_sub[,1:4], 
+                      G=3, 
+                      modelNames = "EEE")
+p_cl <- p_cl %>% 
+  mutate(cl_mc = penguins_mc$classification)
+
+p_cl <- p_cl %>% 
+  mutate(cl_w_j = jitter(cl_w),
+         cl_mc_j = jitter(cl_mc))
+```
+
+
+```{r}
+#| echo: false
+# Arranging by cluster id is important to define edges 
+penguins_cl <- penguins_sub %>%
+  mutate(cl_w = p_cl$cl_w,
+         cl_mc = p_cl$cl_mc) %>%
+  arrange(cl_w)
+
+psub <- penguins_cl %>%
+  select(bl, bd) 
+dup <- duplicated(psub)
+psub <- penguins_cl %>%
+  select(bl, bd, cl_w) %>%
+  filter(!dup) %>%
+  arrange(cl_w)
+
+ncl <- psub %>%
+  count(cl_w) %>%
+  arrange(cl_w) %>%
+  mutate(cumn = cumsum(n))
+phull <- NULL
+for (i in unique(psub$cl_w)) {
+  x <- psub %>%
+    dplyr::filter(cl_w == i) %>%
+    select(bl, bd) 
+  ph <- cxhull(as.matrix(x))$edges
+  if (i > 1) {
+    ph <- ph + ncl$cumn[i-1]
+  }
+  ph <- cbind(ph, rep(i, nrow(ph)))
+  phull <- rbind(phull, ph)
+}
+phull <- as.data.frame(phull)
+colnames(phull) <- c("from", "to", "cl_w") 
+phull_segs <- data.frame(x = psub$bl[phull$from],
+                         y = psub$bd[phull$from],
+                         xend = psub$bl[phull$to],
+                         yend = psub$bd[phull$to],
+                         cl_w = phull$cl_w)
+phull_segs$cl_w <- factor(phull$cl_w) 
+psub$cl_w <- factor(psub$cl_w)
+p_chull2D <- ggplot() +
+  geom_point(data=psub, aes(x=bl, y=bd, 
+                            colour=cl_w)) + 
+  geom_segment(data=phull_segs, aes(x=x, xend=xend,
+                                    y=y, yend=yend,
+                                    colour=cl_w)) +
+  scale_colour_discrete_divergingx(palette = "Zissou 1") +
+  theme_minimal() +
+  theme(aspect.ratio = 1)
+```
+
+```{r}
+#| fig-alt: "Convex hulls around three clusters in 2D"
+p_chull2D 
+```
+:::
+
+::: {.column width=50% .fragment}
+
+![](gifs/penguins_chull.gif){fig-alt="Tour showing 4D convex hulls for three clusters."}
+:::
+
+::::
+
+<center> <span style="font-size:50%;"> Ward's linkage hierarchical clustering </span> </center>
 
 ## Interactivity: exploration {visibility="uncounted"}
 
