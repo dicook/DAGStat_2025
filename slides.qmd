@@ -1350,6 +1350,22 @@ All of these are easier with *direct manipulation interactive graphics* tools: s
 
 *Please use these tools with your high-dimensional analysis methods and data.* 😃
 
+## Berlin challenge
+
+Somewhere in Berlin there is now a little *R sticker graffiti*!
+
+:::: {.columns}
+::: {.column}
+<center>
+![](images/R-sticker-graffiti1.jpg){width=60%}
+</center>
+:::
+::: {.column}
+<center>
+![](images/R-sticker-graffiti2.jpg){width=60%}
+</center>
+:::
+::::
 ## References and acknowledgements
 
 ::: {style="font-size: 90%;"}
